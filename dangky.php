@@ -15,7 +15,8 @@
         $user=$_POST['user'];
         $pass=md5($_POST['pass']);
         $sql="INSERT INTO test(user,pass) VALUES ('$user','$pass')";
-        $query=mysqli_query($conn,$sql);
+        $stmt = $conn->prepare($sql);
+		$query = $stmt->execute();
         header("location:index.php");
     }
 ?>

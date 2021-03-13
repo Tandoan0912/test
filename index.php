@@ -16,16 +16,14 @@
         $user=$_POST['user'];
         $pass=md5($_POST['pass']);
         $sql="SELECT * FROM test WHERE user='$user'";
-        $query=mysqli_query($conn,$sql);              
-        $row=mysqli_fetch_array($query);
-        if (mysqli_num_rows($query) == 0) {
-            echo "Tên đăng nhập này không tồn tại. Vui lòng kiểm tra lại.";
-        }
-        else if($pass != $row['pass']){
+        $stmt = $conn->prepare($sql);
+		$query = $stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($pass != $row['pass']){
             echo "sai mk";
         }
         else{
-            header("location:tk.php");
+            header("location:nhanvien.php");
         }
 
     }
