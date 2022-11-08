@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour {
 		playerRigid = GetComponent<Rigidbody2D> ();
 		downRotation = Quaternion.Euler (0, 0, -90);
 		upRotation = Quaternion.Euler (0, 0, 35);
-	}
+        GetComponent<SpriteRenderer>().material.SetFloat("_GrayscaleAmount", 0f);
+    }
 
 	void Update () {
 		if (!start) {
@@ -61,8 +62,9 @@ public class PlayerController : MonoBehaviour {
 			Destroy (col.gameObject);
 			GameManager.Instance.UpdateScore ();
 		} else if (col.transform.CompareTag ("Obstacle")) {
-			// Destroy the Obstacles after they reach a certain area on the screen
-			foreach (Transform child in col.transform.parent.transform) {
+            // Destroy the Obstacles after they reach a certain area on the screen
+            GetComponent<SpriteRenderer>().material.SetFloat("_GrayscaleAmount", 1f);
+            foreach (Transform child in col.transform.parent.transform) {
 				child.gameObject.GetComponent<BoxCollider2D> ().enabled = false;
 			}
 			KillPlayer ();
