@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 		// Limit the rotation that can occur to the player
 		transform.rotation = new Quaternion (transform.rotation.x, transform.rotation.y, Mathf.Clamp (transform.rotation.z, downRotation.z, upRotation.z), transform.rotation.w);
 	}
-
+	private float down;
 	void LateUpdate () {
 		if (GameManager.Instance.GameState ()) {
 			if (Input.GetMouseButtonDown (0)) {
@@ -42,18 +42,21 @@ public class PlayerController : MonoBehaviour {
 					GetComponent<Animator>().speed = 2;
 				}
 				playerRigid.gravityScale = 1f;
-				tiltSmooth = minTiltSmooth;
+
+                tiltSmooth = minTiltSmooth;
 				transform.rotation = upRotation;
 				playerRigid.velocity = Vector2.zero;
-				// Push the player upwards
-				playerRigid.AddForce (Vector2.up * thrust);
-				SoundManager.Instance.PlayTheAudio("Flap");
-			}
+                // Push the player upwards
+                //playerRigid.AddForce (Vector2.up * thrust);
+                playerRigid.velocity += Vector2.up * thrust * 1.3f * Time.deltaTime;
+                SoundManager.Instance.PlayTheAudio("Flap");
+            }
 		}
-		if (playerRigid.velocity.y < -1f) {
+        //playerRigid.velocity = new Vector2(playerRigid.velocity.x, playerRigid.velocity.x - Time.deltaTime);
+        if (playerRigid.velocity.y < -1f) {
 			// Increase gravity so that downward motion is faster than upward motion
 			tiltSmooth = maxTiltSmooth;
-			playerRigid.gravityScale = 2f;
+			//playerRigid.gravityScale = 2f;
 		}
 	}
 
